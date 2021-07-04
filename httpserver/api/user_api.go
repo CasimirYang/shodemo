@@ -7,10 +7,11 @@ import (
 
 func RouteUser(router *gin.Engine) {
 
-	router.Use(handler.JwtMiddleware())
+	orderGroup := router.Group("/uc/auth")
+	orderGroup.Use(handler.JwtMiddleware())
 
 	router.POST("/uc/login", handler.Login())
-	router.GET("/uc/getUser", handler.GetUser())
-	router.POST("/uc/editUser", handler.EditUser())
-	router.POST("/uc/uploadProfile", handler.UploadProfile())
+	router.GET("/uc/auth/getUser", handler.GetUser())
+	router.POST("/uc/auth/editUser", handler.EditUser())
+	router.POST("/uc/auth/uploadProfile", handler.UploadProfile())
 }

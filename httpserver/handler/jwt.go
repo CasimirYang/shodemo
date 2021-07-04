@@ -19,10 +19,6 @@ type Claims struct {
 
 func JwtMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		if c.Request.RequestURI == "/uc/login" {
-			c.Next()
-			return
-		}
 		var code int
 		code = share.Success
 		token := c.GetHeader("token")

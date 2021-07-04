@@ -9,6 +9,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"crypto/md5"
 )
 
 type LoginRequestJson struct {
@@ -32,11 +34,19 @@ type UserInfoVO struct {
 	Profile  string `json:"profile"`
 }
 
+var md5Salt = "sp001"
+
+func md5Encode(password string) string {
+	data := []byte(password + md5Salt)
+	has := md5.Sum(data)
+	return fmt.Sprintf("%x", has)
+}
+
 func Login() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		var json LoginRequestJson
 		if c.BindJSON(&json) == nil {
-			userInfoReply, err := rpc.Login(json.UserName, json.Password)
+			userInfoReply, err := rpc.Login(json.UserName, md5Encode(json.Password))
 			if err != nil {
 				c.JSON(http.StatusOK, ResponseVO{Code: share.SystemError})
 				return

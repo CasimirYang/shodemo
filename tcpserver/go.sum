@@ -1,8 +1,6 @@
 cloud.google.com/go v0.26.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 cloud.google.com/go v0.34.0/go.mod h1:aQUYkXzVsufM+DwF1aE+0xfcU+56JwCaLick0ClmMTw=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
-github.com/CasimirYang/share v0.0.3 h1:GJmBk4FpLWl9ujshKIAkyLbrZXjzfmlDGYgV468FYn8=
-github.com/CasimirYang/share v0.0.3/go.mod h1:SKKnnysdtVol2JSpaaL+N72Sh8YceYwU7W7ieTOWq2Y=
 github.com/CasimirYang/share v0.0.5 h1:IM6p1sHSQV732uaZa4Sd+/YYHbi/F4W6gzDoC9jHP/g=
 github.com/CasimirYang/share v0.0.5/go.mod h1:SKKnnysdtVol2JSpaaL+N72Sh8YceYwU7W7ieTOWq2Y=
 github.com/antihax/optional v1.0.0/go.mod h1:uupD/76wgC+ih3iEmQUL+0Ugr19nfwCT1kdvxnR2qWY=
