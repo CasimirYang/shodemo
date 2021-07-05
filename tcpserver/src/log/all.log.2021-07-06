@@ -1,0 +1,2 @@
+2021-07-05 16:02:40 - [ERR] - domain/user_do.go - l29 - dial tcp 127.0.0.1:3306: connect: connection refused
+2021-07-05 17:50:51 - [ERR] - domain/user_do.go - l29 - dial tcp 127.0.0.1:3306: connect: connection refused

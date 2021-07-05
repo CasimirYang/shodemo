@@ -1,0 +1,6 @@
+mysql:
+  jdbc: root:123456@tcp(127.0.0.1:3306)/spo_db
+redis:
+  url: localhost:6379
+rpc:
+  port: :50051

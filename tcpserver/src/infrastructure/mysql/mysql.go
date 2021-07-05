@@ -2,9 +2,10 @@ package mysql
 
 import (
 	"database/sql"
+	"github.com/CasimirYang/share"
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/spf13/viper"
 	"tcpserver/infrastructure/po"
-	"tcpserver/trace"
 	"time"
 )
 
@@ -12,9 +13,10 @@ var db *sql.DB
 
 func init() {
 	var err error
-	db, err = sql.Open("mysql", "root:123456@tcp(127.0.0.1:3306)/spo_db")
+	jdbc := viper.GetString("mysql.jdbc")
+	db, err = sql.Open("mysql", jdbc)
 	if err != nil {
-		_ = trace.Logger.Error(err)
+		share.SugarLogger.Error(err)
 	}
 	db.SetConnMaxLifetime(time.Minute * 3)
 	db.SetMaxOpenConns(30)
