@@ -3,9 +3,8 @@ package main
 import (
 	"github.com/gin-gonic/gin"
 	"httpserver/api"
+	"httpserver/trace"
 )
-
-//var log = logrus.New()
 
 func main() {
 	//// 为当前logrus实例设置消息的输出，同样地，
@@ -16,9 +15,10 @@ func main() {
 	//// 同样地，也可以单独为某个logrus实例设置日志级别和hook，这里不详细叙述。
 	//log.Formatter = &logrus.JSONFormatter{}
 
-	//log.Info("======= log =======")
-
 	router := gin.Default()
+	router.Use(trace.AccessLogHandler())
+
+	//router.Use(Jaeger())
 
 	//router.Use(loggerToFile())
 

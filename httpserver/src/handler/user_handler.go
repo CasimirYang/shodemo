@@ -4,70 +4,49 @@ import (
 	"fmt"
 	"github.com/CasimirYang/share"
 	"github.com/gin-gonic/gin"
+	"github.com/opentracing/opentracing-go"
 	"httpserver/handler/rpc"
+	"httpserver/handler/util"
+	"httpserver/handler/vo"
 	"io"
 	"log"
 	"net/http"
 	"os"
-
-	"crypto/md5"
 )
-
-type LoginRequestJson struct {
-	UserName string `json:"userName" binding:"required"`
-	Password string `json:"password" binding:"required"`
-}
-
-type UpdateRequestJson struct {
-	NickName string `json:"nickName" binding:"required"`
-}
-
-type MessageVO struct {
-	Token    string      `json:"token,omitempty"`
-	UserInfo *UserInfoVO `json:"userInfo"`
-}
-
-type UserInfoVO struct {
-	UserName string `json:"userName"`
-	NickName string `json:"nickName"`
-	Password string `json:"password"`
-	Profile  string `json:"profile"`
-}
-
-var md5Salt = "sp001"
-
-func md5Encode(password string) string {
-	data := []byte(password + md5Salt)
-	has := md5.Sum(data)
-	return fmt.Sprintf("%x", has)
-}
 
 func Login() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		var json LoginRequestJson
-		if c.BindJSON(&json) == nil {
-			userInfoReply, err := rpc.Login(json.UserName, md5Encode(json.Password))
+		span := opentracing.StartSpan("/uc/login") // Start a span using the global, in this case noop, tracer
+		span.LogKV("event", "vvv")
+		defer span.Finish()
+
+		var json vo.LoginRequestVO
+		err := c.BindJSON(&json)
+		if err == nil {
+			userInfoReply, err := rpc.Login(json.UserName, util.Md5Encode(json.Password))
 			if err != nil {
-				c.JSON(http.StatusOK, ResponseVO{Code: share.SystemError})
+				c.JSON(http.StatusOK, vo.CommonResponseVO{Code: share.SystemError})
 				return
 			}
-			var response ResponseVO
+			var response vo.CommonResponseVO
 			if userInfoReply.Code == share.Success {
 				userInfo := userInfoReply.UserInfo
-				userInfoVO := UserInfoVO{userInfo.GetUserName(),
+				userInfoVO := vo.UserInfoVO{userInfo.GetUserName(),
 					userInfo.GetNickName(),
 					userInfo.GetPassword(),
 					userInfo.GetProfile()}
-				token, err := generateToken(userInfo.GetUid())
+				token, err := util.GenerateToken(userInfo.GetUid())
 				if err != nil {
-					c.JSON(http.StatusOK, ResponseVO{Code: share.SystemError})
+					c.JSON(http.StatusOK, vo.CommonResponseVO{Code: share.SystemError})
 					return
 				}
-				response = ResponseVO{share.Success, &MessageVO{token, &userInfoVO}}
+				response = vo.CommonResponseVO{share.Success, &vo.UserResponseVO{token, &userInfoVO}}
 			} else {
-				response = ResponseVO{Code: int(userInfoReply.Code)}
+				response = vo.CommonResponseVO{Code: int(userInfoReply.Code)}
 			}
 			c.JSON(http.StatusOK, response)
+		} else {
+			c.JSON(http.StatusOK, vo.CommonResponseVO{Code: share.InvalidParams, Message: err.Error()})
 		}
 	}
 }
@@ -76,19 +55,19 @@ func GetUser() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		userInfoReply, err := rpc.GetUser(c.GetInt64("uid"))
 		if err != nil {
-			c.JSON(http.StatusOK, ResponseVO{Code: share.SystemError})
+			c.JSON(http.StatusOK, vo.CommonResponseVO{Code: share.SystemError})
 			return
 		}
-		var response ResponseVO
+		var response vo.CommonResponseVO
 		if userInfoReply.Code == share.Success {
 			userInfo := userInfoReply.UserInfo
-			userInfoVO := UserInfoVO{userInfo.GetUserName(),
+			userInfoVO := vo.UserInfoVO{userInfo.GetUserName(),
 				userInfo.GetNickName(),
 				userInfo.GetPassword(),
 				userInfo.GetProfile()}
-			response = ResponseVO{share.Success, &MessageVO{UserInfo: &userInfoVO}}
+			response = vo.CommonResponseVO{share.Success, &vo.UserResponseVO{UserInfo: &userInfoVO}}
 		} else {
-			response = ResponseVO{Code: int(userInfoReply.Code)}
+			response = vo.CommonResponseVO{Code: int(userInfoReply.Code)}
 		}
 		c.JSON(http.StatusOK, response)
 	}
@@ -96,50 +75,59 @@ func GetUser() func(c *gin.Context) {
 
 func EditUser() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		var json UpdateRequestJson
-		if c.BindJSON(&json) == nil {
+		var json vo.UpdateRequestVO
+		err := c.BindJSON(&json)
+		if err == nil {
 			userInfoReply, err := rpc.EditUser(c.GetInt64("uid"), &json.NickName, nil)
 			if err != nil {
-				c.JSON(http.StatusOK, ResponseVO{Code: share.SystemError})
+				c.JSON(http.StatusOK, vo.CommonResponseVO{Code: share.SystemError})
 				return
 			}
-			var response ResponseVO
+			var response vo.CommonResponseVO
 			if userInfoReply.Code == share.Success {
-				response = ResponseVO{Code: share.Success}
+				response = vo.CommonResponseVO{Code: share.Success}
 			} else {
-				response = ResponseVO{Code: int(userInfoReply.Code)}
+				response = vo.CommonResponseVO{Code: int(userInfoReply.Code)}
 			}
 			c.JSON(http.StatusOK, response)
+		} else {
+			c.JSON(http.StatusOK, vo.CommonResponseVO{Code: share.InvalidParams, Message: err.Error()})
 		}
 	}
 }
 
 func UploadProfile() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		path := generateFile(c)
-		userInfoReply, err := rpc.EditUser(c.GetInt64("uid"), nil, &path)
+		path, err := generateFile(c)
 		if err != nil {
-			c.JSON(http.StatusOK, ResponseVO{Code: share.SystemError})
+			c.JSON(http.StatusOK, vo.CommonResponseVO{Code: share.InvalidParams, Message: err.Error()})
 			return
 		}
-		var response ResponseVO
+		userInfoReply, err := rpc.EditUser(c.GetInt64("uid"), nil, &path)
+		if err != nil {
+			c.JSON(http.StatusOK, vo.CommonResponseVO{Code: share.SystemError})
+			return
+		}
+		var response vo.CommonResponseVO
 		if userInfoReply.Code == share.Success {
-			response = ResponseVO{Code: share.Success}
+			response = vo.CommonResponseVO{Code: share.Success}
 		} else {
-			response = ResponseVO{Code: int(userInfoReply.Code)}
+			response = vo.CommonResponseVO{Code: int(userInfoReply.Code)}
 		}
 		c.JSON(http.StatusOK, response)
 	}
 }
 
-func generateFile(c *gin.Context) string {
-	//todo 文件大小限制
+func generateFile(c *gin.Context) (string, error) {
+	//limit 2m
+	c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, 2*1024*1024)
 	// 拿到这个文件
-	file, fileHeader, _ := c.Request.FormFile("file")
-	if file == nil {
-		//todo no support
+	file, fileHeader, err := c.Request.FormFile("file")
+	if err != nil {
+		log.Println(err)
+		return "", err
 	}
-	c.String(http.StatusOK, fmt.Sprintf("'%s' uploaded!", fileHeader.Filename))
+	fmt.Printf("'%s' uploaded!", fileHeader.Filename)
 
 	out, err := os.Create("./" + fileHeader.Filename + ".png")
 	if err != nil {
@@ -149,6 +137,7 @@ func generateFile(c *gin.Context) string {
 	_, err = io.Copy(out, file)
 	if err != nil {
 		log.Fatal(err)
+		return "", err
 	}
-	return out.Name()
+	return out.Name(), nil
 }

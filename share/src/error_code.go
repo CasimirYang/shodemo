@@ -1,4 +1,4 @@
-package share
+package main
 
 const (
 	Success        = 0

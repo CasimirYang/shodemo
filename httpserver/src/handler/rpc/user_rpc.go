@@ -23,21 +23,18 @@ func init() {
 }
 
 func Login(userName, password string) (*proto.UserInfoReply, error) {
-	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	return userClient.Login(ctx, &proto.LoginRequest{UserName: userName, Password: password})
 }
 
 func GetUser(uid int64) (*proto.UserInfoReply, error) {
-	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	return userClient.GetUser(ctx, &proto.GetUserRequest{Uid: uid})
 }
 
 func EditUser(uid int64, nickName, profile *string) (*proto.UserInfoReply, error) {
-	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	var updateUserRequest *proto.UpdateUserRequest

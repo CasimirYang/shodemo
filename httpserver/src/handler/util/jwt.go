@@ -1,10 +1,11 @@
-package handler
+package util
 
 import (
 	"fmt"
 	"github.com/CasimirYang/share"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"httpserver/handler/vo"
 
 	"net/http"
 	"time"
@@ -37,7 +38,7 @@ func JwtMiddleware() gin.HandlerFunc {
 			}
 		}
 		if code != share.Success {
-			c.JSON(http.StatusOK, ResponseVO{Code: code})
+			c.JSON(http.StatusOK, vo.CommonResponseVO{Code: code})
 			c.Abort()
 			return
 		}
@@ -47,7 +48,7 @@ func JwtMiddleware() gin.HandlerFunc {
 	}
 }
 
-func generateToken(uid int64) (string, error) {
+func GenerateToken(uid int64) (string, error) {
 	nowTime := time.Now()
 	expireTime := nowTime.Add(3 * time.Hour)
 

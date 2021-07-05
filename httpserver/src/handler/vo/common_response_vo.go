@@ -1,6 +1,6 @@
-package handler
+package vo
 
-type ResponseVO struct {
+type CommonResponseVO struct {
 	Code    int         `json:"code"`
 	Message interface{} `json:"message"`
 }
