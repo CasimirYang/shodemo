@@ -8,8 +8,7 @@ import (
 
 func RouteUser(router *gin.Engine) {
 
-	orderGroup := router.Group("/uc/auth")
-	orderGroup.Use(util.JwtMiddleware())
+	router.Use(util.JwtMiddleware())
 
 	router.POST("/uc/login", handler.Login())
 	router.GET("/uc/auth/getUser", handler.GetUser())

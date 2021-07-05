@@ -28,7 +28,6 @@ func Login() func(c *gin.Context) {
 				userInfo := userInfoReply.UserInfo
 				userInfoVO := vo.UserInfoVO{userInfo.GetUserName(),
 					userInfo.GetNickName(),
-					userInfo.GetPassword(),
 					userInfo.GetProfile()}
 				token, err := util.GenerateToken(userInfo.GetUid())
 				if err != nil {
@@ -58,7 +57,6 @@ func GetUser() func(c *gin.Context) {
 			userInfo := userInfoReply.UserInfo
 			userInfoVO := vo.UserInfoVO{userInfo.GetUserName(),
 				userInfo.GetNickName(),
-				userInfo.GetPassword(),
 				userInfo.GetProfile()}
 			response = vo.CommonResponseVO{share.Success, &vo.UserResponseVO{UserInfo: &userInfoVO}}
 		} else {
