@@ -6,7 +6,7 @@ import (
 	"tcpserver/api"
 
 	"google.golang.org/grpc"
-	pb "tcpserver/api/proto"
+	pb "tcpserver/api/protoo"
 )
 
 const (

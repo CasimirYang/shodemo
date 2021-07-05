@@ -14,7 +14,7 @@
 
 syntax = "proto3";
 
-option go_package = "httpserver/handler/rpc/proto";
+option go_package = "tcpserver/abc/api/protoo";
 
 package api;
 

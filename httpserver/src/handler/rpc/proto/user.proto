@@ -14,9 +14,9 @@
 
 syntax = "proto3";
 
-option go_package = "httpserver/handler/rpc/proto";
+option go_package = "httpserver/abc/handler/rpc/proto";
 
-package api;
+package rpc;
 
 // The greeting service definition.
 service User {

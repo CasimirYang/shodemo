@@ -3,14 +3,14 @@ package rpc
 import (
 	"context"
 	"google.golang.org/grpc"
-	pb "httpserver/handler/rpc/proto"
+	"httpserver/handler/rpc/proto"
 	"log"
 	"time"
 )
 
 const address = "localhost:50051"
 
-var userClient pb.UserClient
+var userClient proto.UserClient
 
 func init() {
 	// Set up a connection to the server.
@@ -19,32 +19,32 @@ func init() {
 		log.Fatalf("did not connect: %v", err)
 	}
 	//defer conn.Close() todo
-	userClient = pb.NewUserClient(conn)
+	userClient = proto.NewUserClient(conn)
 }
 
-func Login(userName, password string) (*pb.UserInfoReply, error) {
+func Login(userName, password string) (*proto.UserInfoReply, error) {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	return userClient.Login(ctx, &pb.LoginRequest{UserName: userName, Password: password})
+	return userClient.Login(ctx, &proto.LoginRequest{UserName: userName, Password: password})
 }
 
-func GetUser(uid int64) (*pb.UserInfoReply, error) {
+func GetUser(uid int64) (*proto.UserInfoReply, error) {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	return userClient.GetUser(ctx, &pb.GetUserRequest{Uid: uid})
+	return userClient.GetUser(ctx, &proto.GetUserRequest{Uid: uid})
 }
 
-func EditUser(uid int64, nickName, profile *string) (*pb.UserInfoReply, error) {
+func EditUser(uid int64, nickName, profile *string) (*proto.UserInfoReply, error) {
 	// Contact the server and print out its response.
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	var updateUserRequest *pb.UpdateUserRequest
+	var updateUserRequest *proto.UpdateUserRequest
 	if nickName != nil {
-		updateUserRequest = &pb.UpdateUserRequest{Uid: uid, NickName: *nickName}
+		updateUserRequest = &proto.UpdateUserRequest{Uid: uid, NickName: *nickName}
 	} else if profile != nil {
-		updateUserRequest = &pb.UpdateUserRequest{Uid: uid, Profile: *profile}
+		updateUserRequest = &proto.UpdateUserRequest{Uid: uid, Profile: *profile}
 	}
 	return userClient.UpdateUser(ctx, updateUserRequest)
 }

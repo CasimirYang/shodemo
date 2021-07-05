@@ -2,11 +2,11 @@ package api
 
 import (
 	"context"
+	pb "tcpserver/api/protoo"
 	"tcpserver/domain"
 	"tcpserver/service"
 
 	"github.com/CasimirYang/share"
-	pb "tcpserver/api/proto"
 )
 
 type Server struct {
