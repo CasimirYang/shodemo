@@ -14,9 +14,9 @@
 
 syntax = "proto3";
 
-option go_package = "tcpserver/abc/api/protoo";
+option go_package = "tcpserver/api/proto";
 
-package api;
+package proto;
 
 // The greeting service definition.
 service User {

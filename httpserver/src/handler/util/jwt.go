@@ -1,7 +1,6 @@
 package util
 
 import (
-	"fmt"
 	"github.com/CasimirYang/share"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -29,8 +28,6 @@ func JwtMiddleware() gin.HandlerFunc {
 		} else {
 			var err error
 			claims, err = parseToken(token)
-			fmt.Println("解析出来的claims:", claims) //todo
-			fmt.Println("解析出来的err:", err)
 			if err != nil {
 				code = share.InvalidToken
 			} else if time.Now().Unix() > claims.ExpiresAt {

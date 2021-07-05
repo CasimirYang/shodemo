@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/CasimirYang/share"
 	"github.com/gin-gonic/gin"
-	"github.com/opentracing/opentracing-go"
 	"httpserver/handler/rpc"
 	"httpserver/handler/util"
 	"httpserver/handler/vo"
@@ -16,10 +15,6 @@ import (
 
 func Login() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		span := opentracing.StartSpan("/uc/login") // Start a span using the global, in this case noop, tracer
-		span.LogKV("event", "vvv")
-		defer span.Finish()
-
 		var json vo.LoginRequestVO
 		err := c.BindJSON(&json)
 		if err == nil {

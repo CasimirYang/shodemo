@@ -33,6 +33,8 @@ func AccessLogHandler() gin.HandlerFunc {
 		res := &CustomResponseWriter{body: bytes.NewBufferString(""), ResponseWriter: c.Writer}
 		c.Writer = res
 		c.Next()
-		fmt.Println(fmt.Sprintf("url=%s, status=%d,request=%s, resp=%s", c.Request.URL, c.Writer.Status(), string(requestBodyBytes), res.body.String()))
+
+		logMsg := fmt.Sprintf("url=%s, status=%d,request=%s, resp=%s", c.Request.URL, c.Writer.Status(), string(requestBodyBytes), res.body.String())
+		Logger.Info(logMsg)
 	}
 }

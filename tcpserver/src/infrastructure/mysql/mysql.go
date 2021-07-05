@@ -3,8 +3,8 @@ package mysql
 import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
-	"log"
 	"tcpserver/infrastructure/po"
+	"tcpserver/trace"
 	"time"
 )
 
@@ -14,13 +14,11 @@ func init() {
 	var err error
 	db, err = sql.Open("mysql", "root:123456@tcp(127.0.0.1:3306)/spo_db")
 	if err != nil {
-		log.Println("==========")
-		log.Fatal(err)
+		_ = trace.Logger.Error(err)
 	}
 	db.SetConnMaxLifetime(time.Minute * 3)
 	db.SetMaxOpenConns(30)
 	db.SetMaxIdleConns(10)
-	log.Println("mysql init..")
 }
 
 func GetUser(userName, password string) (*po.UserPO, error) {

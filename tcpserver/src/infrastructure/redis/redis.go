@@ -3,7 +3,6 @@ package redis
 import (
 	"context"
 	"github.com/go-redis/redis/v8"
-	"log"
 	"strconv"
 	"tcpserver/infrastructure/po"
 	"time"
@@ -19,7 +18,6 @@ func init() {
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})
-	log.Println("redis init..")
 }
 
 const UserCacheKey = "account_user_id_"
@@ -41,7 +39,6 @@ func GetUser(uid int64) (*po.UserPO, error) {
 		return nil, err
 	}
 	if len(val) == 0 {
-		log.Printf("could not get user in redis uid:%d", uid)
 		return nil, nil
 	}
 	user := po.UserPO{Id: uid, UserName: val["userName"], NickName: val["nickName"], Password: val["password"], Profile: val["profile"]}

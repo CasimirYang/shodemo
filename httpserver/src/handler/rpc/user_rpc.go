@@ -4,7 +4,7 @@ import (
 	"context"
 	"google.golang.org/grpc"
 	"httpserver/handler/rpc/proto"
-	"log"
+	"httpserver/trace"
 	"time"
 )
 
@@ -16,9 +16,8 @@ func init() {
 	// Set up a connection to the server.
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
-		log.Fatalf("did not connect: %v", err)
+		_ = trace.Logger.Error(err.Error())
 	}
-	//defer conn.Close() todo
 	userClient = proto.NewUserClient(conn)
 }
 

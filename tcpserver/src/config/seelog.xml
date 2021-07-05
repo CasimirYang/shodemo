@@ -1,0 +1,9 @@
+<seelog type="asynctimer" asyncinterval="5000" minlevel="debug" maxlevel="error">
+    <outputs formatid="common">
+        <rollingfile formatid="common" type="date" filename="./log/all.log" datepattern="2006-01-02" fullname="true" maxrolls="30" />
+    </outputs>
+    <formats>
+        <!-- 设置格式，输出UTC日期 UTC时间 - 缩写版大写日志级别 - 相对于应用程序运行目录的调用者路径 - 日志记录器被调用时的行号 - 消息文本（最后换行） -->
+        <format id="common" format="%UTCDate %UTCTime - [%LEV] - %RelFile - l%Line - %Msg%n"/>
+    </formats>
+</seelog>

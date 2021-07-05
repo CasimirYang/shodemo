@@ -1,4 +1,4 @@
-package log
+package trace
 
 import (
 	"github.com/cihub/seelog"
@@ -9,7 +9,7 @@ var Logger seelog.LoggerInterface
 
 func init() {
 	var err error
-	Logger, err = seelog.LoggerFromConfigAsFile("../seelog.xml")
+	Logger, err = seelog.LoggerFromConfigAsFile("config/seelog.xml")
 
 	if err != nil {
 		log.Fatal(err)
