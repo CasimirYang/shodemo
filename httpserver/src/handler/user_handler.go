@@ -16,33 +16,33 @@ import (
 
 func Login() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		var json vo.LoginRequestVO
-		err := c.ShouldBindJSON(&json)
-		if err == nil {
-			userInfoReply, err := rpc.Login(json.UserName, util.Md5Encode(json.Password))
+		var requestJson vo.LoginRequestVO
+		err := c.ShouldBindJSON(&requestJson)
+		if err != nil {
+			c.JSON(http.StatusOK, vo.CommonResponseVO{Code: share.InvalidParams, Message: err.Error()})
+			return
+		}
+		userInfoReply, err := rpc.Login(requestJson.UserName, util.Md5Encode(requestJson.Password))
+		if err != nil {
+			c.JSON(http.StatusOK, vo.CommonResponseVO{Code: share.SystemError})
+			return
+		}
+		var response vo.CommonResponseVO
+		if userInfoReply.Code == share.Success {
+			userInfo := userInfoReply.UserInfo
+			userInfoVO := &vo.UserInfoVO{UserName: userInfo.GetUserName(),
+				NickName: userInfo.GetNickName(),
+				Profile:  userInfo.GetProfile()}
+			token, err := util.GenerateToken(userInfo.GetUid())
 			if err != nil {
 				c.JSON(http.StatusOK, vo.CommonResponseVO{Code: share.SystemError})
 				return
 			}
-			var response vo.CommonResponseVO
-			if userInfoReply.Code == share.Success {
-				userInfo := userInfoReply.UserInfo
-				userInfoVO := vo.UserInfoVO{UserName: userInfo.GetUserName(),
-					NickName: userInfo.GetNickName(),
-					Profile:  userInfo.GetProfile()}
-				token, err := util.GenerateToken(userInfo.GetUid())
-				if err != nil {
-					c.JSON(http.StatusOK, vo.CommonResponseVO{Code: share.SystemError})
-					return
-				}
-				response = vo.CommonResponseVO{Code: share.Success, Message: &vo.UserResponseVO{Token: token, UserInfo: &userInfoVO}}
-			} else {
-				response = vo.CommonResponseVO{Code: int(userInfoReply.Code)}
-			}
-			c.JSON(http.StatusOK, response)
+			response = vo.CommonResponseVO{Code: share.Success, Message: &vo.UserResponseVO{Token: token, UserInfo: userInfoVO}}
 		} else {
-			c.JSON(http.StatusOK, vo.CommonResponseVO{Code: share.InvalidParams, Message: err.Error()})
+			response = vo.CommonResponseVO{Code: int(userInfoReply.Code)}
 		}
+		c.JSON(http.StatusOK, response)
 	}
 }
 
@@ -56,10 +56,10 @@ func GetUser() func(c *gin.Context) {
 		var response vo.CommonResponseVO
 		if userInfoReply.Code == share.Success {
 			userInfo := userInfoReply.UserInfo
-			userInfoVO := vo.UserInfoVO{UserName: userInfo.GetUserName(),
+			userInfoVO := &vo.UserInfoVO{UserName: userInfo.GetUserName(),
 				NickName: userInfo.GetNickName(),
 				Profile:  userInfo.GetProfile()}
-			response = vo.CommonResponseVO{Code: share.Success, Message: &vo.UserResponseVO{UserInfo: &userInfoVO}}
+			response = vo.CommonResponseVO{Code: share.Success, Message: &vo.UserResponseVO{UserInfo: userInfoVO}}
 		} else {
 			response = vo.CommonResponseVO{Code: int(userInfoReply.Code)}
 		}
@@ -69,24 +69,23 @@ func GetUser() func(c *gin.Context) {
 
 func EditUser() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		var json vo.UpdateRequestVO
-		err := c.ShouldBindJSON(&json)
-		if err == nil {
-			userInfoReply, err := rpc.EditUser(c.GetInt64("uid"), &json.NickName, nil)
-			if err != nil {
-				c.JSON(http.StatusOK, vo.CommonResponseVO{Code: share.SystemError})
-				return
-			}
-			var response vo.CommonResponseVO
-			if userInfoReply.Code == share.Success {
-				response = vo.CommonResponseVO{Code: share.Success}
-			} else {
-				response = vo.CommonResponseVO{Code: int(userInfoReply.Code)}
-			}
-			c.JSON(http.StatusOK, response)
-		} else {
+		var requestJson vo.UpdateRequestVO
+		err := c.ShouldBindJSON(&requestJson)
+		if err != nil {
 			c.JSON(http.StatusOK, vo.CommonResponseVO{Code: share.InvalidParams, Message: err.Error()})
 		}
+		userInfoReply, err := rpc.EditUser(c.GetInt64("uid"), &requestJson.NickName, nil)
+		if err != nil {
+			c.JSON(http.StatusOK, vo.CommonResponseVO{Code: share.SystemError})
+			return
+		}
+		var response vo.CommonResponseVO
+		if userInfoReply.Code == share.Success {
+			response = vo.CommonResponseVO{Code: share.Success}
+		} else {
+			response = vo.CommonResponseVO{Code: int(userInfoReply.Code)}
+		}
+		c.JSON(http.StatusOK, response)
 	}
 }
 
