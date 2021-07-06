@@ -26,15 +26,15 @@ func Login() func(c *gin.Context) {
 			var response vo.CommonResponseVO
 			if userInfoReply.Code == share.Success {
 				userInfo := userInfoReply.UserInfo
-				userInfoVO := vo.UserInfoVO{userInfo.GetUserName(),
-					userInfo.GetNickName(),
-					userInfo.GetProfile()}
+				userInfoVO := vo.UserInfoVO{UserName: userInfo.GetUserName(),
+					NickName: userInfo.GetNickName(),
+					Profile:  userInfo.GetProfile()}
 				token, err := util.GenerateToken(userInfo.GetUid())
 				if err != nil {
 					c.JSON(http.StatusOK, vo.CommonResponseVO{Code: share.SystemError})
 					return
 				}
-				response = vo.CommonResponseVO{share.Success, &vo.UserResponseVO{token, &userInfoVO}}
+				response = vo.CommonResponseVO{Code: share.Success, Message: &vo.UserResponseVO{Token: token, UserInfo: &userInfoVO}}
 			} else {
 				response = vo.CommonResponseVO{Code: int(userInfoReply.Code)}
 			}
@@ -55,10 +55,10 @@ func GetUser() func(c *gin.Context) {
 		var response vo.CommonResponseVO
 		if userInfoReply.Code == share.Success {
 			userInfo := userInfoReply.UserInfo
-			userInfoVO := vo.UserInfoVO{userInfo.GetUserName(),
-				userInfo.GetNickName(),
-				userInfo.GetProfile()}
-			response = vo.CommonResponseVO{share.Success, &vo.UserResponseVO{UserInfo: &userInfoVO}}
+			userInfoVO := vo.UserInfoVO{UserName: userInfo.GetUserName(),
+				NickName: userInfo.GetNickName(),
+				Profile:  userInfo.GetProfile()}
+			response = vo.CommonResponseVO{Code: share.Success, Message: &vo.UserResponseVO{UserInfo: &userInfoVO}}
 		} else {
 			response = vo.CommonResponseVO{Code: int(userInfoReply.Code)}
 		}
@@ -130,7 +130,12 @@ func generateFile(c *gin.Context) (string, error) {
 	if err != nil {
 		share.SugarLogger.Error(err)
 	}
-	defer out.Close()
+	defer func(out *os.File) {
+		err := out.Close()
+		if err != nil {
+			share.SugarLogger.Error(err)
+		}
+	}(out)
 	_, err = io.Copy(out, file)
 	if err != nil {
 		share.SugarLogger.Error(err)

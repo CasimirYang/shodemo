@@ -1,9 +1,11 @@
 package main
 
 import (
+	"github.com/CasimirYang/share"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"httpserver/api"
+	"os"
 )
 
 func main() {
@@ -18,5 +20,9 @@ func main() {
 
 	api.RouteUser(router)
 
-	router.Run(viper.GetString("port"))
+	err := router.Run(viper.GetString("port"))
+	if err != nil {
+		share.SugarLogger.Error(err)
+		os.Exit(1)
+	}
 }
