@@ -9,6 +9,6 @@ COPY src /www/webapp
 
 RUN go mod download
 RUN go build -o gdp .
-EXPOSE 8080
+EXPOSE 8083
 # 执行可执行文件
 CMD ["./gdp"]

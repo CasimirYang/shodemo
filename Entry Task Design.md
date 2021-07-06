@@ -9,6 +9,7 @@
 ```mermaid
 sequenceDiagram
 		user ->> httpserver: login (http)
+		httpserver ->> httpserver: convert password with md5+salt
     httpserver ->> + tcpserver : login (rpc)
     tcpserver ->> mysql : get user
     tcpserver ->> redis : cache user
@@ -77,6 +78,7 @@ sequenceDiagram
 | 1    | unknown System error                   |
 | 2    | InvalidParams                          |
 | 3    | login fail (password or useName error) |
+| 4    | InvalidToken                           |
 
 ### Login
 
@@ -247,7 +249,7 @@ CREATE TABLE `user_base_info_tab` (
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `idx_uname_password` (`user_name`,`password`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4
 ```
 
 

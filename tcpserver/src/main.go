@@ -21,9 +21,6 @@ func main() {
 		os.Exit(1)
 	}
 	s := grpc.NewServer(
-		//grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(
-		//	grpc_zap.StreamServerInterceptor(share.SugarLogger.Desugar()),
-		//)),
 		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
 			grpc_zap.UnaryServerInterceptor(share.SugarLogger.Desugar()), logFilter(),
 		)),
