@@ -1,0 +1,6 @@
+port: :8083
+jwtSecret: sho001
+password:
+  md5Salt: sp001
+user:
+  rpcUrl: localhost:50051

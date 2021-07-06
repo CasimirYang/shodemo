@@ -1,22 +1,22 @@
 package handler
 
 import (
-	"fmt"
+	"errors"
 	"github.com/CasimirYang/share"
 	"github.com/gin-gonic/gin"
 	"httpserver/handler/rpc"
 	"httpserver/handler/util"
 	"httpserver/handler/vo"
 	"io"
-	"log"
 	"net/http"
 	"os"
+	"path"
 )
 
 func Login() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		var json vo.LoginRequestVO
-		err := c.BindJSON(&json)
+		err := c.ShouldBindJSON(&json)
 		if err == nil {
 			userInfoReply, err := rpc.Login(json.UserName, util.Md5Encode(json.Password))
 			if err != nil {
@@ -69,7 +69,7 @@ func GetUser() func(c *gin.Context) {
 func EditUser() func(c *gin.Context) {
 	return func(c *gin.Context) {
 		var json vo.UpdateRequestVO
-		err := c.BindJSON(&json)
+		err := c.ShouldBindJSON(&json)
 		if err == nil {
 			userInfoReply, err := rpc.EditUser(c.GetInt64("uid"), &json.NickName, nil)
 			if err != nil {
@@ -91,12 +91,12 @@ func EditUser() func(c *gin.Context) {
 
 func UploadProfile() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		path, err := generateFile(c)
+		filePath, err := generateFile(c)
 		if err != nil {
 			c.JSON(http.StatusOK, vo.CommonResponseVO{Code: share.InvalidParams, Message: err.Error()})
 			return
 		}
-		userInfoReply, err := rpc.EditUser(c.GetInt64("uid"), nil, &path)
+		userInfoReply, err := rpc.EditUser(c.GetInt64("uid"), nil, &filePath)
 		if err != nil {
 			c.JSON(http.StatusOK, vo.CommonResponseVO{Code: share.SystemError})
 			return
@@ -117,19 +117,23 @@ func generateFile(c *gin.Context) (string, error) {
 	// 拿到这个文件
 	file, fileHeader, err := c.Request.FormFile("file")
 	if err != nil {
-		log.Println(err)
+		share.SugarLogger.Error(err)
 		return "", err
 	}
-	fmt.Printf("'%s' uploaded!", fileHeader.Filename)
+	ext := path.Ext(fileHeader.Filename)
+	if ext != ".png" {
+		return "", errors.New("need png format")
+	}
+	share.SugarLogger.Infof("'%s' uploaded!", fileHeader.Filename)
 
-	out, err := os.Create("./" + fileHeader.Filename + ".png")
+	out, err := os.Create("./" + fileHeader.Filename)
 	if err != nil {
-		log.Fatal(err)
+		share.SugarLogger.Error(err)
 	}
 	defer out.Close()
 	_, err = io.Copy(out, file)
 	if err != nil {
-		log.Fatal(err)
+		share.SugarLogger.Error(err)
 		return "", err
 	}
 	return out.Name(), nil

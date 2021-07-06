@@ -2,21 +2,20 @@ package rpc
 
 import (
 	"context"
+	"github.com/CasimirYang/share"
+	"github.com/spf13/viper"
 	"google.golang.org/grpc"
 	"httpserver/handler/rpc/proto"
-	"httpserver/trace"
 	"time"
 )
-
-const address = "localhost:50051"
 
 var userClient proto.UserClient
 
 func init() {
-	// Set up a connection to the server.
+	address := viper.GetString("user.rpcUrl")
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
-		_ = trace.Logger.Error(err.Error())
+		share.SugarLogger.Error(err.Error())
 	}
 	userClient = proto.NewUserClient(conn)
 }

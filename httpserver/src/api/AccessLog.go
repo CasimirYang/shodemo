@@ -1,8 +1,8 @@
-package trace
+package api
 
 import (
 	"bytes"
-	"fmt"
+	"github.com/CasimirYang/share"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 )
@@ -24,17 +24,19 @@ func (w CustomResponseWriter) WriteString(s string) (int, error) {
 
 func AccessLogHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		contentType := c.Request.Header.Get("Content-Type")
 		var requestBodyBytes []byte
-		if c.Request.Body != nil {
-			requestBodyBytes, _ = ioutil.ReadAll(c.Request.Body)
+		if contentType == "application/json" {
+			if c.Request.Body != nil {
+				requestBodyBytes, _ = ioutil.ReadAll(c.Request.Body)
+			}
+			c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(requestBodyBytes))
 		}
-		c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(requestBodyBytes))
 
 		res := &CustomResponseWriter{body: bytes.NewBufferString(""), ResponseWriter: c.Writer}
 		c.Writer = res
 		c.Next()
 
-		logMsg := fmt.Sprintf("url=%s, status=%d,request=%s, resp=%s", c.Request.URL, c.Writer.Status(), string(requestBodyBytes), res.body.String())
-		Logger.Info(logMsg)
+		share.SugarLogger.Infof("url=%s, status=%d,request=%s, resp=%s", c.Request.URL, c.Writer.Status(), string(requestBodyBytes), res.body.String())
 	}
 }

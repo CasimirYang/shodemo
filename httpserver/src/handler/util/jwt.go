@@ -4,13 +4,14 @@ import (
 	"github.com/CasimirYang/share"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	"httpserver/handler/vo"
 
 	"net/http"
 	"time"
 )
 
-var jwtSecret = []byte("sho001")
+var jwtSecret = []byte(viper.GetString("jwtSecret"))
 
 type Claims struct {
 	Uid int64 `json:"uid"`

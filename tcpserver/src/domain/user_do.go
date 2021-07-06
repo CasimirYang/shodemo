@@ -3,10 +3,10 @@ package domain
 import (
 	"database/sql"
 	"errors"
+	"github.com/CasimirYang/share"
 	"tcpserver/infrastructure/mysql"
 	"tcpserver/infrastructure/po"
 	"tcpserver/infrastructure/redis"
-	"tcpserver/trace"
 )
 
 type UserDO struct {
@@ -25,7 +25,7 @@ func Login(userName, password string) (*UserDO, error) {
 	if err == sql.ErrNoRows {
 		return nil, ErrNoData
 	} else if err != nil {
-		_ = trace.Logger.Error(err)
+		share.SugarLogger.Error(err)
 		return nil, ErrSystem
 	}
 	redis.CacheUser(userPO.Id, *userPO)
@@ -38,7 +38,7 @@ func GetUser(uid int64) (*UserDO, error) {
 	var err error
 	userPO, err = redis.GetUser(uid)
 	if err != nil {
-		_ = trace.Logger.Error(err)
+		share.SugarLogger.Error(err)
 		return nil, ErrSystem
 	} else if userPO == nil {
 		userPO, err = mysql.GetUserByUid(uid)
@@ -61,7 +61,7 @@ func UpdateUserByUid(uid int64, nickName, profile string) error {
 		err = mysql.UpdateProfile(uid, profile)
 	}
 	if err != nil {
-		_ = trace.Logger.Error(err)
+		share.SugarLogger.Error(err)
 		return ErrSystem
 	}
 	redis.DeleteCache(uid)
