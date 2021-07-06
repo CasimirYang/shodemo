@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"httpserver/api"
+	"net/http"
 	"os"
 )
 
@@ -17,6 +18,8 @@ func main() {
 			"message": "ok",
 		})
 	})
+
+	router.StaticFS("/static", http.Dir("./static"))
 
 	api.RouteUser(router)
 

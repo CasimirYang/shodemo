@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/CasimirYang/share"
 	"github.com/gin-gonic/gin"
+	"github.com/satori/go.uuid"
 	"httpserver/handler/rpc"
 	"httpserver/handler/util"
 	"httpserver/handler/vo"
@@ -114,7 +115,6 @@ func UploadProfile() func(c *gin.Context) {
 func generateFile(c *gin.Context) (string, error) {
 	//limit 2m
 	c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, 2*1024*1024)
-	// 拿到这个文件
 	file, fileHeader, err := c.Request.FormFile("file")
 	if err != nil {
 		share.SugarLogger.Error(err)
@@ -124,9 +124,8 @@ func generateFile(c *gin.Context) (string, error) {
 	if ext != ".png" {
 		return "", errors.New("need png format")
 	}
-	share.SugarLogger.Infof("'%s' uploaded!", fileHeader.Filename)
-
-	out, err := os.Create("./" + fileHeader.Filename)
+	newFileName := uuid.NewV4().String() + ".png"
+	out, err := os.Create("static/" + newFileName)
 	if err != nil {
 		share.SugarLogger.Error(err)
 	}
@@ -141,5 +140,8 @@ func generateFile(c *gin.Context) (string, error) {
 		share.SugarLogger.Error(err)
 		return "", err
 	}
-	return out.Name(), nil
+
+	share.SugarLogger.Infof("'%s' uploaded!", newFileName)
+
+	return "http://localhost:8083/" + out.Name(), nil
 }

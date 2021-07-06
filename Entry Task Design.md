@@ -242,7 +242,7 @@ CREATE TABLE `user_base_info_tab` (
   `user_name` varchar(11) DEFAULT NULL,
   `nick_name` varchar(30) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `profile` varchar(50) NOT NULL,
+  `profile` varchar(100) NOT NULL,
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
@@ -252,4 +252,4 @@ CREATE TABLE `user_base_info_tab` (
 
 
 
-![image-20210705201542236](/Users/jinghua.yang/Library/Application Support/typora-user-images/image-20210705201542236.png)
+![image-20210706130118534](/Users/jinghua.yang/Library/Application Support/typora-user-images/image-20210706130118534.png)

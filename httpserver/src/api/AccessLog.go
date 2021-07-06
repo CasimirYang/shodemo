@@ -24,14 +24,15 @@ func (w CustomResponseWriter) WriteString(s string) (int, error) {
 
 func AccessLogHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		contentType := c.Request.Header.Get("Content-Type")
-		var requestBodyBytes []byte
-		if contentType == "application/json" {
-			if c.Request.Body != nil {
-				requestBodyBytes, _ = ioutil.ReadAll(c.Request.Body)
-			}
-			c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(requestBodyBytes))
+		if c.Request.RequestURI[0:7] == "/static" || c.Request.RequestURI == "/uc/uploadProfile" {
+			c.Next()
+			return
 		}
+		var requestBodyBytes []byte
+		if c.Request.Body != nil {
+			requestBodyBytes, _ = ioutil.ReadAll(c.Request.Body)
+		}
+		c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(requestBodyBytes))
 
 		res := &CustomResponseWriter{body: bytes.NewBufferString(""), ResponseWriter: c.Writer}
 		c.Writer = res
