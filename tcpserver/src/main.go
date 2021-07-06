@@ -2,16 +2,14 @@ package main
 
 import (
 	"github.com/CasimirYang/share"
-	"github.com/spf13/viper"
-	"os"
-
-	grpc_zap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
-	"net"
-	"tcpserver/rpc"
-
 	"github.com/grpc-ecosystem/go-grpc-middleware"
+	"github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
+	"github.com/spf13/viper"
 	"google.golang.org/grpc"
-	pb "tcpserver/rpc/proto"
+	"net"
+	"os"
+	"tcpserver/rpc"
+	"tcpserver/rpc/proto"
 )
 
 func main() {
@@ -30,7 +28,7 @@ func main() {
 		)),
 	)
 
-	pb.RegisterUserServer(s, &rpc.Server{})
+	proto.RegisterUserServer(s, &rpc.Server{})
 	if err := s.Serve(lis); err != nil {
 		share.SugarLogger.Error(err)
 		os.Exit(1)

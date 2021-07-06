@@ -3,39 +3,39 @@ package rpc
 import (
 	"context"
 	"tcpserver/domain"
-	pb "tcpserver/rpc/proto"
+	"tcpserver/rpc/proto"
 	"tcpserver/service"
 
 	"github.com/CasimirYang/share"
 )
 
 type Server struct {
-	pb.UnimplementedUserServer
+	proto.UnimplementedUserServer
 }
 
-func (s *Server) Login(_ context.Context, in *pb.LoginRequest) (resp *pb.UserInfoReply, err error) {
+func (s *Server) Login(_ context.Context, in *proto.LoginRequest) (resp *proto.UserInfoReply, err error) {
 	user, err := service.Login(in.GetUserName(), in.GetPassword())
 	return convertReply(err, user)
 }
 
-func (s *Server) GetUser(_ context.Context, in *pb.GetUserRequest) (*pb.UserInfoReply, error) {
+func (s *Server) GetUser(_ context.Context, in *proto.GetUserRequest) (*proto.UserInfoReply, error) {
 	user, err := service.GetUser(in.GetUid())
 	return convertReply(err, user)
 }
 
-func (s *Server) UpdateUser(_ context.Context, in *pb.UpdateUserRequest) (*pb.UserInfoReply, error) {
+func (s *Server) UpdateUser(_ context.Context, in *proto.UpdateUserRequest) (*proto.UserInfoReply, error) {
 	err := service.UpdateUserByUid(in.GetUid(), in.GetNickName(), in.GetProfile())
 	return convertReply(err, nil)
 }
 
-func convertReply(err error, user *domain.UserDO) (*pb.UserInfoReply, error) {
+func convertReply(err error, user *domain.UserDO) (*proto.UserInfoReply, error) {
 	if err == domain.ErrSystem {
-		return &pb.UserInfoReply{Code: share.SystemError, UserInfo: nil}, nil
+		return &proto.UserInfoReply{Code: share.SystemError, UserInfo: nil}, nil
 	} else if err == domain.ErrNoData {
-		return &pb.UserInfoReply{Code: share.LoginFailError, UserInfo: nil}, nil
+		return &proto.UserInfoReply{Code: share.LoginFailError, UserInfo: nil}, nil
 	} else if user != nil {
-		userRes := pb.UserInfo{Uid: user.Id, UserName: user.UserName, NickName: user.NickName, Password: user.Password, Profile: user.Profile}
-		return &pb.UserInfoReply{Code: share.Success, UserInfo: &userRes}, nil
+		userRes := proto.UserInfo{Uid: user.Id, UserName: user.UserName, NickName: user.NickName, Password: user.Password, Profile: user.Profile}
+		return &proto.UserInfoReply{Code: share.Success, UserInfo: &userRes}, nil
 	}
-	return &pb.UserInfoReply{Code: share.Success, UserInfo: nil}, nil
+	return &proto.UserInfoReply{Code: share.Success, UserInfo: nil}, nil
 }
