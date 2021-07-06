@@ -3,6 +3,7 @@ package redis
 import (
 	"context"
 	"github.com/go-redis/redis/v8"
+	"github.com/spf13/viper"
 	"strconv"
 	"tcpserver/infrastructure/po"
 	"time"
@@ -14,7 +15,7 @@ var rdb *redis.Client
 
 func init() {
 	rdb = redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     viper.GetString("redis.url"),
 		Password: "", // no password set
 		DB:       0,  // use default DB
 	})

@@ -1,0 +1,4 @@
+2021-07-05 16:02:40 - [INF] - trace/AccessLog.go - l39 - url=/uc/login, status=200,request={"userName":"casi","password":"123"}, resp={"code":1,"message":null}
+2021-07-05 17:50:47 - [INF] - trace/AccessLog.go - l39 - url=/, status=200,request=, resp={"code":4,"message":null}
+2021-07-05 17:50:47 - [INF] - trace/AccessLog.go - l39 - url=/favicon.ico, status=200,request=, resp={"code":4,"message":null}
+2021-07-05 17:50:51 - [INF] - trace/AccessLog.go - l39 - url=/uc/login, status=200,request={"userName":"casi","password":"123"}, resp={"code":1,"message":null}

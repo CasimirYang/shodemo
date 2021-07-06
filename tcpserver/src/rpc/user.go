@@ -32,7 +32,7 @@ func convertReply(err error, user *domain.UserDO) (*pb.UserInfoReply, error) {
 	if err == domain.ErrSystem {
 		return &pb.UserInfoReply{Code: share.SystemError, UserInfo: nil}, nil
 	} else if err == domain.ErrNoData {
-		return &pb.UserInfoReply{Code: share.NoDataError, UserInfo: nil}, nil
+		return &pb.UserInfoReply{Code: share.LoginFailError, UserInfo: nil}, nil
 	} else if user != nil {
 		userRes := pb.UserInfo{Uid: user.Id, UserName: user.UserName, NickName: user.NickName, Password: user.Password, Profile: user.Profile}
 		return &pb.UserInfoReply{Code: share.Success, UserInfo: &userRes}, nil
