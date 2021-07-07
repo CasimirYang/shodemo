@@ -2,11 +2,11 @@ package api
 
 import (
 	"context"
-	"tcpserver/api/proto"
+	"git.garena.com/jinghua.yang/entry-task-common/proto"
 	"tcpserver/domain"
 	"tcpserver/service"
 
-	"github.com/CasimirYang/share"
+	commonCode "git.garena.com/jinghua.yang/entry-task-common/code"
 )
 
 type Server struct {
@@ -30,12 +30,12 @@ func (s *Server) UpdateUser(_ context.Context, in *proto.UpdateUserRequest) (*pr
 
 func convertReply(err error, user *domain.UserDO) (*proto.UserInfoReply, error) {
 	if err == domain.ErrSystem {
-		return &proto.UserInfoReply{Code: share.SystemError, UserInfo: nil}, nil
+		return &proto.UserInfoReply{Code: commonCode.SystemError, UserInfo: nil}, nil
 	} else if err == domain.ErrNoData {
-		return &proto.UserInfoReply{Code: share.LoginFailError, UserInfo: nil}, nil
+		return &proto.UserInfoReply{Code: commonCode.LoginFailError, UserInfo: nil}, nil
 	} else if user != nil {
 		userRes := proto.UserInfo{Uid: user.Id, UserName: user.UserName, NickName: user.NickName, Password: user.Password, Profile: user.Profile}
-		return &proto.UserInfoReply{Code: share.Success, UserInfo: &userRes}, nil
+		return &proto.UserInfoReply{Code: commonCode.Success, UserInfo: &userRes}, nil
 	}
-	return &proto.UserInfoReply{Code: share.Success, UserInfo: nil}, nil
+	return &proto.UserInfoReply{Code: commonCode.Success, UserInfo: nil}, nil
 }

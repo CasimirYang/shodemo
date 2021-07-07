@@ -2,7 +2,7 @@ package mysql
 
 import (
 	"database/sql"
-	"github.com/CasimirYang/share"
+	commonLog "git.garena.com/jinghua.yang/entry-task-common/log"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/spf13/viper"
 	"os"
@@ -17,7 +17,7 @@ func init() {
 	jdbc := viper.GetString("mysql.jdbc")
 	db, err = sql.Open("mysql", jdbc)
 	if err != nil {
-		share.SugarLogger.Error(err)
+		commonLog.SugarLogger.Error(err)
 		os.Exit(1)
 	}
 	db.SetConnMaxLifetime(time.Minute * 3)

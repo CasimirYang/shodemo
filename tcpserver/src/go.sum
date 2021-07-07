@@ -37,6 +37,14 @@ cloud.google.com/go/storage v1.6.0/go.mod h1:N7U0C8pVQ/+NIKOBQyamJIeKQKkZ+mxpohl
 cloud.google.com/go/storage v1.8.0/go.mod h1:Wv1Oy7z6Yz3DshWRJFhqM/UCfaWIRTdp0RXyy7KQOVs=
 cloud.google.com/go/storage v1.10.0/go.mod h1:FLPqc6j+Ki4BU591ie1oL6qBQGu2Bl/tZ9ullr3+Kg0=
 dmitri.shuralyov.com/gpu/mtl v0.0.0-20190408044501-666a987793e9/go.mod h1:H6x//7gZCb22OMCxBHrMx7a5I7Hp++hsVxbQ4BYO7hU=
+git.garena.com/jinghua.yang/entry-task-common/code v1.2.0 h1:JN2y466BBvEEgW5welvjJSFilzIZ1wCZS1Msz/ND8qI=
+git.garena.com/jinghua.yang/entry-task-common/code v1.2.0/go.mod h1:BN0UzSfK3wakfomIwz1UqNY7Ym0J8tnzSmahKSYJ0tQ=
+git.garena.com/jinghua.yang/entry-task-common/config v1.2.0 h1:A6DpRu2K8/NziCEgkgVYY1uQuqEqhBvLpwEWwOX4UUw=
+git.garena.com/jinghua.yang/entry-task-common/config v1.2.0/go.mod h1:2gqsiKLwTOwx3anSHAbypObRPY5CS5dOOuBJWu82+j8=
+git.garena.com/jinghua.yang/entry-task-common/log v1.2.0 h1:C4U4QoecpIrkL3ElBuy4WzkrNtOi09Odcc+ZypZU3rw=
+git.garena.com/jinghua.yang/entry-task-common/log v1.2.0/go.mod h1:MkvGFOf4EwFUS66gzwQIIq0eQ4kvf9or7ZlJ7dEL7O4=
+git.garena.com/jinghua.yang/entry-task-common/proto v1.2.0 h1:P0hfL8SzzF8MUeFw48NFayWCxvQt7cLBUPWrAvFirNo=
+git.garena.com/jinghua.yang/entry-task-common/proto v1.2.0/go.mod h1:+7S3vHvU468AasmtNC8MOE2sdXZ5+VhuURdiflZNuJE=
 github.com/BurntSushi/toml v0.3.1 h1:WXkYYl6Yr3qBf1K79EBnL4mak0OimBfB0XUf9Vl28OQ=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
 github.com/BurntSushi/xgb v0.0.0-20160522181843-27f122750802/go.mod h1:IVnqGOEym/WlBOVXweHU+Q+/VP0lqqI8lqeDx9IjBqo=
@@ -45,6 +53,8 @@ github.com/CasimirYang/share v1.0.3 h1:kVMlrkGddOVTV/Q6iM6iQ6Rvj3plsLQOHTUdrOXDs
 github.com/CasimirYang/share v1.0.3/go.mod h1:ixBMExZUGuYM0gMtYMcmuBrTo3LNa6c3iOlNsrOBNXo=
 github.com/CasimirYang/share v1.0.5 h1:TK8JznSHW7OS68dxtDNRaK02E6yyUIUMyAi2CnepQo0=
 github.com/CasimirYang/share v1.0.5/go.mod h1:ixBMExZUGuYM0gMtYMcmuBrTo3LNa6c3iOlNsrOBNXo=
+github.com/CasimirYang/share v1.0.6 h1:cd8mlj+uFbgwP+CQUe1zA5il0gDuXA7IhgxpYNYog/Q=
+github.com/CasimirYang/share v1.0.6/go.mod h1:ixBMExZUGuYM0gMtYMcmuBrTo3LNa6c3iOlNsrOBNXo=
 github.com/antihax/optional v1.0.0/go.mod h1:uupD/76wgC+ih3iEmQUL+0Ugr19nfwCT1kdvxnR2qWY=
 github.com/armon/circbuf v0.0.0-20150827004946-bbbad097214e/go.mod h1:3U/XgcO3hCbHZ8TKRvWD2dDTCfh9M9ya+I9JpbB7O8o=
 github.com/armon/go-metrics v0.0.0-20180917152333-f0300d1749da/go.mod h1:Q73ZrmVTwzkszR9V5SSuryQ31EELlFMUz1kKyl939pY=
@@ -662,6 +672,8 @@ google.golang.org/protobuf v1.25.0/go.mod h1:9JNX74DMeImyA3h4bdi1ymwjUzf21/xIlba
 google.golang.org/protobuf v1.26.0-rc.1/go.mod h1:jlhhOSvTdKEhbULTjvd4ARK9grFBp09yW+WbY/TyQbw=
 google.golang.org/protobuf v1.26.0 h1:bxAC2xTBsZGibn2RTntX0oH50xLsqy1OxA9tTL3p/lk=
 google.golang.org/protobuf v1.26.0/go.mod h1:9q0QmTI4eRPtz6boOQmLYwt+qCgq0jsYwAQnmE0givc=
+google.golang.org/protobuf v1.27.1 h1:SnqbnDw1V7RiZcXPx5MEeqPv2s79L9i7BJUlG/+RurQ=
+google.golang.org/protobuf v1.27.1/go.mod h1:9q0QmTI4eRPtz6boOQmLYwt+qCgq0jsYwAQnmE0givc=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 h1:qIbj1fsPNlZgppZ+VLlY7N33q108Sa+fhmuc+sWQYwY=
