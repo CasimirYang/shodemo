@@ -1,7 +1,8 @@
 package main
 
 import (
-	"github.com/CasimirYang/share"
+	_ "git.garena.com/jinghua.yang/entry-task-common/config"
+	commonLog "git.garena.com/jinghua.yang/entry-task-common/log"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"httpserver/api"
@@ -25,7 +26,7 @@ func main() {
 
 	err := router.Run(viper.GetString("port"))
 	if err != nil {
-		share.SugarLogger.Error(err)
+		commonLog.SugarLogger.Error(err)
 		os.Exit(1)
 	}
 }

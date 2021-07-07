@@ -2,10 +2,10 @@ package rpc
 
 import (
 	"context"
-	"github.com/CasimirYang/share"
+	commonLog "git.garena.com/jinghua.yang/entry-task-common/log"
+	"git.garena.com/jinghua.yang/entry-task-common/proto"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc"
-	"httpserver/handler/rpc/proto"
 	"time"
 )
 
@@ -15,7 +15,7 @@ func init() {
 	address := viper.GetString("user.rpcUrl")
 	conn, err := grpc.Dial(address, grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
-		share.SugarLogger.Error(err.Error())
+		commonLog.SugarLogger.Error(err.Error())
 	}
 	userClient = proto.NewUserClient(conn)
 }

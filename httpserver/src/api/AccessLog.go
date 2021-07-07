@@ -2,7 +2,7 @@ package api
 
 import (
 	"bytes"
-	"github.com/CasimirYang/share"
+	commonLog "git.garena.com/jinghua.yang/entry-task-common/log"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"
 )
@@ -38,6 +38,6 @@ func AccessLogHandler() gin.HandlerFunc {
 		c.Writer = res
 		c.Next()
 
-		share.SugarLogger.Infof("url=%s, status=%d,request=%s, resp=%s", c.Request.URL, c.Writer.Status(), string(requestBodyBytes), res.body.String())
+		commonLog.SugarLogger.Infof("url=%s, status=%d,request=%s, resp=%s", c.Request.URL, c.Writer.Status(), string(requestBodyBytes), res.body.String())
 	}
 }

@@ -3,7 +3,10 @@ module httpserver
 go 1.14
 
 require (
-	github.com/CasimirYang/share v1.0.5
+	git.garena.com/jinghua.yang/entry-task-common/code v1.2.0
+	git.garena.com/jinghua.yang/entry-task-common/config v1.2.0
+	git.garena.com/jinghua.yang/entry-task-common/log v1.2.0
+	git.garena.com/jinghua.yang/entry-task-common/proto v1.2.0
 	github.com/HdrHistogram/hdrhistogram-go v1.1.0 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/gin-gonic/gin v1.7.2
@@ -15,5 +18,5 @@ require (
 	github.com/uber/jaeger-lib v2.4.1+incompatible // indirect
 	go.uber.org/atomic v1.8.0 // indirect
 	google.golang.org/grpc v1.39.0
-	google.golang.org/protobuf v1.27.1
+	google.golang.org/protobuf v1.27.1 // indirect
 )

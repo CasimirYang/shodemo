@@ -1,7 +1,7 @@
 package util
 
 import (
-	"github.com/CasimirYang/share"
+	commonCode "git.garena.com/jinghua.yang/entry-task-common/code"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -25,21 +25,21 @@ func JwtMiddleware() gin.HandlerFunc {
 			return
 		}
 		var code int
-		code = share.Success
+		code = commonCode.Success
 		token := c.GetHeader("token")
 		var claims *Claims
 		if token == "" {
-			code = share.InvalidToken
+			code = commonCode.InvalidToken
 		} else {
 			var err error
 			claims, err = parseToken(token)
 			if err != nil {
-				code = share.InvalidToken
+				code = commonCode.InvalidToken
 			} else if time.Now().Unix() > claims.ExpiresAt {
-				code = share.InvalidToken
+				code = commonCode.InvalidToken
 			}
 		}
-		if code != share.Success {
+		if code != commonCode.Success {
 			c.JSON(http.StatusOK, vo.CommonResponseVO{Code: code})
 			c.Abort()
 			return

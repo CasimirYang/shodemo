@@ -1,0 +1,13 @@
+2021-07-07T17:11:43.272+0800	INFO	api/AccessLog.go:41	url=/uc/login, status=200,request={
+    "userName": "1",
+    "password": "123"
+}, resp={"code":0,"message":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImV4cCI6MTYyNTY1OTkwM30.NU7AcPKOMfClWKNRZFTKWVqbIxBlxsnmlhpPWtB9oG4","userInfo":{"userName":"1","nickName":"小李子1","profile":"http://localhost:8083/static/426d0a47-6949-4d13-9cf9-d57a22610038.png"}}}
+2021-07-07T17:11:44.083+0800	INFO	api/AccessLog.go:41	url=/uc/login, status=200,request={
+    "userName": "1",
+    "password": "123"
+}, resp={"code":0,"message":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImV4cCI6MTYyNTY1OTkwNH0.xnbJofysKRTrSvLPBo4om8kLDWnLAS7-aTDGyayQw8I","userInfo":{"userName":"1","nickName":"小李子1","profile":"http://localhost:8083/static/426d0a47-6949-4d13-9cf9-d57a22610038.png"}}}
+2021-07-07T17:11:56.769+0800	ERROR	src/main.go:29	listen tcp :8083: bind: address already in use
+2021-07-07T17:13:52.374+0800	INFO	api/AccessLog.go:41	url=/uc/login, status=200,request={
+    "userName": "1",
+    "password": "123"
+}, resp={"code":0,"message":{"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImV4cCI6MTYyNTY2MDAzMn0.mH6Z7MQKycZxH8FxRBSoqP2edl3sTeqDN30jVW4NX8k","userInfo":{"userName":"1","nickName":"小李子1","profile":"http://localhost:8083/static/426d0a47-6949-4d13-9cf9-d57a22610038.png"}}}
