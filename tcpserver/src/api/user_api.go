@@ -1,9 +1,9 @@
-package rpc
+package api
 
 import (
 	"context"
+	"tcpserver/api/proto"
 	"tcpserver/domain"
-	"tcpserver/rpc/proto"
 	"tcpserver/service"
 
 	"github.com/CasimirYang/share"
